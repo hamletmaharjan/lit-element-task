@@ -22,27 +22,33 @@ class AppTable extends LitElement {
             width: 33%;
             list-style: outside none none;
          }
+         --vaadin-grid-header-cell: {
+            text-transform: uppercase;
+            padding: 16px;
+          };
+        }
         
         `;
     }
     static get properties() {
         return {
-            data: {type: Array}
+            data: {type: Array},
+            onKebabMenuClick: {type: Function}
         }
     }
 
     constructor() {
         super();
         this.indexRenderer = this.indexRenderer.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        // this.handleEdit = this.handleEdit.bind(this);
+        // this.handleDelete = this.handleDelete.bind(this);
     }
 
     render() {
         console.log(this.data);
         return html`
             <div>hello</div>
-            <app-menu .onEdit="${this.handleEdit}" .onDelete="${this.handleDelete}"></app-menu>
+            
             <vaadin-grid .items="${this.data}" theme="column-borders">
                 
                 <vaadin-grid-column width="20px" .renderer="${this.indexRenderer}"></vaadin-grid-column>
@@ -64,7 +70,7 @@ class AppTable extends LitElement {
         // console.log(rowData);
         // <iron-icon icon="more-vert" @click="${(e)=>this.handleKebabMenuClick(e, rowData)}"></iron-icon>
         const innerHTML = html`
-        <iron-icon icon="more-vert" @click="${(e)=>this.handleKebabMenuClick(e, rowData)}"></iron-icon>
+        <iron-icon icon="more-vert" @click="${(e)=>this.onKebabMenuClick(e, rowData)}"></iron-icon>
         
         `;
         render( innerHTML, root);
@@ -104,27 +110,16 @@ class AppTable extends LitElement {
         render(innerHTML, root);
     }
 
-    handleKebabMenuClick(e, rowData) {
-        let menu = this.shadowRoot.querySelector('app-menu');
-        const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
-        menu.positions = {...positions};
-        menu.style.backgroundColor = 'red';
-        menu.id = rowData.item.id;
-        menu.hidden = false;
-    }
+    // handleKebabMenuClick(e, rowData) {
+    //     let menu = this.shadowRoot.querySelector('app-menu');
+    //     const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
+    //     menu.positions = {...positions};
+    //     menu.style.backgroundColor = 'red';
+    //     menu.id = rowData.item.id;
+    //     menu.hidden = false;
+    // }
 
-    handleEdit(id) {
-        // console.log('edit', id);
-        this.shadowRoot.querySelector('app-menu').hidden = true;
-        const result = this.data.find((item)=> {
-            return item.id === id;
-        });
-        console.log(result);
-    }
-    handleDelete(id) {
-        console.log('delete', id);
-        this.shadowRoot.querySelector('app-menu').hidden = true;
-    }
+    
 
 }
 

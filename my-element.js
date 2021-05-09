@@ -53,18 +53,44 @@ export class MyElement extends LitElement {
       {id:1 , well: 'A1', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}},
       {id:2 , well: 'A2', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}},
       {id:3 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}}
-    ]
+    ];
+    this.handleEdit = this.handleEdit.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleKebabMenuClick = this.handleKebabMenuClick.bind(this);
   }
 
   render() {
     return html`
-      <app-table .data="${this.data}"></app-table>
+    <app-menu .onEdit="${this.handleEdit}" .onDelete="${this.handleDelete}"></app-menu>
+      <app-table .data="${this.data}" .onKebabMenuClick="${this.handleKebabMenuClick}"></app-table>
     
     `;
   }
 
   _onClick() {
     this.count++;
+  }
+
+
+  handleEdit(id) {
+    // console.log('edit', id);
+    this.shadowRoot.querySelector('app-menu').hidden = true;
+    const result = this.data.find((item)=> {
+        return item.id === id;
+    });
+    console.log(result);
+  }
+  handleDelete(id) {
+      console.log('delete', id);
+      this.shadowRoot.querySelector('app-menu').hidden = true;
+  }
+  handleKebabMenuClick(e, rowData) {
+    let menu = this.shadowRoot.querySelector('app-menu');
+    const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
+    menu.positions = {...positions};
+    menu.style.backgroundColor = 'red';
+    menu.id = rowData.item.id;
+    menu.hidden = false;
   }
 }
 
