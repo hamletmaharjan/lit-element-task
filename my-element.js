@@ -6,6 +6,9 @@
 
 import {LitElement, html, css} from 'lit';
 
+import './app-table.js';
+import './app-menu.js';
+
 /**
  * An example element.
  *
@@ -14,14 +17,13 @@ import {LitElement, html, css} from 'lit';
  */
 export class MyElement extends LitElement {
   static get styles() {
-    return css`
-      :host {
-        display: block;
-        border: solid 1px gray;
-        padding: 16px;
-        max-width: 800px;
-      }
-    `;
+    // return css`
+    //   :host {
+    //     display: block;
+    //     border: solid 1px gray;
+    //     padding: 16px;
+    //   }
+    // `;
   }
 
   static get properties() {
@@ -35,6 +37,11 @@ export class MyElement extends LitElement {
        * The number of times the button has been clicked.
        */
       count: {type: Number},
+
+      /**
+       * The array to store table entries
+       */
+      data: {type: Array}
     };
   }
 
@@ -42,15 +49,17 @@ export class MyElement extends LitElement {
     super();
     this.name = 'World';
     this.count = 0;
+    this.data = [
+      {id:1 , well: 'A1', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}},
+      {id:2 , well: 'A2', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}},
+      {id:3 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'s',hp:'dsss',val:9}}
+    ]
   }
 
   render() {
     return html`
-      <h1>Hello, ${this.name}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
-      <slot></slot>
+      <app-table .data="${this.data}"></app-table>
+    
     `;
   }
 
