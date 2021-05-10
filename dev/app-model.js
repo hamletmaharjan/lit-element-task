@@ -94,6 +94,7 @@ class AppModel extends LitElement {
                         <div class="divide">
                             <paper-input always-float-label 
                                 label="Name*" 
+                                id="name"
                                 type="text"
                                 name="name"
                                 auto-validate error-message="name is required"
@@ -158,20 +159,27 @@ class AppModel extends LitElement {
 
     handleCancel() {
         [this.name, this.legand, this.description, this.total, this.comment] = ['', 0, '', 0, ''];
+        // this.shadowRoot.querySelector('#name').validate().reset();
         // console.log(this.name, this.legand, this.description);
     }
 
 
     handleConfirm(e) {
         // console.log(this.name, this.description, this.legand);
-        let myObj = {
-            name: this.name, 
-            legandsPromoted: this.legand, 
-            description: this.description,
-            totalLegandsInBindingGroup: this.total,
-            comment: this.comment
+        let validated = false;
+        validated = this.shadowRoot.querySelector('#name').validate();
+        if(validated){
+            let myObj = {
+                name: this.name, 
+                legandsPromoted: this.legand, 
+                description: this.description,
+                totalLegandsInBindingGroup: this.total,
+                comment: this.comment
+            }
+            console.log(myObj);
         }
-        console.log(myObj);
+        
+        
     }
 
     handleChange(event) {
