@@ -18,6 +18,7 @@ class AppMenu extends LitElement {
 
             paper-item:hover {
                 cursor:pointer;
+                background-color:#bbc1c9;
             }
             
         `;

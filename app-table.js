@@ -47,7 +47,7 @@ class AppTable extends LitElement {
     render() {
         console.log(this.data);
         return html`
-            <div>hello</div>
+            
             
             <vaadin-grid .items="${this.data}" theme="column-borders">
                 
@@ -67,8 +67,7 @@ class AppTable extends LitElement {
     }
 
     indexRenderer(root, column, rowData) {
-        // console.log(rowData);
-        // <iron-icon icon="more-vert" @click="${(e)=>this.handleKebabMenuClick(e, rowData)}"></iron-icon>
+        
         const innerHTML = html`
         <iron-icon icon="more-vert" @click="${(e)=>this.onKebabMenuClick(e, rowData)}"></iron-icon>
         
@@ -110,14 +109,7 @@ class AppTable extends LitElement {
         render(innerHTML, root);
     }
 
-    // handleKebabMenuClick(e, rowData) {
-    //     let menu = this.shadowRoot.querySelector('app-menu');
-    //     const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
-    //     menu.positions = {...positions};
-    //     menu.style.backgroundColor = 'red';
-    //     menu.id = rowData.item.id;
-    //     menu.hidden = false;
-    // }
+   
 
     
 
