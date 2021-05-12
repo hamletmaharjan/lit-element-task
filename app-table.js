@@ -1,16 +1,31 @@
-import '@vaadin/vaadin-grid';
-import '@vaadin/vaadin-grid/vaadin-grid-column-group';
-import '@vaadin/vaadin-button';
+import { LitElement, html, css } from 'lit-element';
+import { render } from 'lit-html';
 
+import '@vaadin/vaadin-grid';
+import '@vaadin/vaadin-button';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-
-import { LitElement, html, css, render } from 'lit-element';
+import '@vaadin/vaadin-grid/vaadin-grid-column-group';
 
 import './app-menu';
 
+/**
+ * `<app-table>` Custom component to add a table
+ *
+ * <my-element>
+ *  <app-table></app-table>
+ *
+ * @polymer
+ * @litElement
+ * @customElement
+ */
 class AppTable extends LitElement {
 
+    /**
+     * Static getter styles
+     * 
+     * @returns {styles}
+     */
     static get styles() {
         return css`
            
@@ -30,50 +45,40 @@ class AppTable extends LitElement {
         
         `;
     }
+
+    /**
+     * Static getter properties
+     * 
+     * @returns Object
+     */
     static get properties() {
         return {
+            /**
+             * holds all the table datas passed from parent
+             */
             data: {type: Array},
+
+            /**
+             * handler function when 3 dot menu is clicked
+             */
             onKebabMenuClick: {type: Function}
         }
     }
 
+    /**
+     * constructor
+     */
     constructor() {
         super();
-        this.indexRenderer = this.indexRenderer.bind(this);
-        // this.handleEdit = this.handleEdit.bind(this);
-        // this.handleDelete = this.handleDelete.bind(this);
-    }
 
-    render() {
-        console.log(this.data);
-        return html`
-            
-            
-            <vaadin-grid .items="${this.data}" theme="column-borders">
-                
-                <vaadin-grid-column width="20px" .renderer="${this.indexRenderer}"></vaadin-grid-column>
-                <vaadin-grid-column width="30px" path="well" header="Well"></vaadin-grid-column>
-                <vaadin-grid-column width="40px" path="library" header="Library"></vaadin-grid-column>
-                <vaadin-grid-column width="30px" path="previousPlate" header="Previous Plate"></vaadin-grid-column>
-                <vaadin-grid-column width="30px" path="previousCoordinate" header="Previous Coordinate"></vaadin-grid-column>
-                <vaadin-grid-column width="30px" path="feature" header="Feature"></vaadin-grid-column>
-                <vaadin-grid-column path="nrxId" header="NRX ID"></vaadin-grid-column>
-                <vaadin-grid-column path="barcode" header="2D Barcode"></vaadin-grid-column>
-                <vaadin-grid-column width="30px" path="target" header="Target"></vaadin-grid-column>
-                <vaadin-grid-column path="group" header="Binding Groups"></vaadin-grid-column>
-                <vaadin-grid-column width="140px" .headerRenderer="${this.validationRenderer}" .renderer="${this.validationBodyRenderer}"></vaadin-grid-column>
-            </vaadin-grid>
-        `;
+        this.indexRenderer = this.indexRenderer.bind(this);
     }
 
     indexRenderer(root, column, rowData) {
-        
         const innerHTML = html`
         <iron-icon icon="more-vert" @click="${(e)=>this.onKebabMenuClick(e, rowData)}"></iron-icon>
-        
         `;
-        render( innerHTML, root);
-        // root.textContent = '4dot';   
+        render( innerHTML, root); 
     }
 
     validationRenderer(root, column, rowData) {
@@ -96,7 +101,6 @@ class AppTable extends LitElement {
     }
 
     validationBodyRenderer(root, column, rowData) {
-        // console.log(rowData);
         const innerHTML = html`
             <div class="validation-body">
                 <ul>
@@ -109,9 +113,28 @@ class AppTable extends LitElement {
         render(innerHTML, root);
     }
 
-   
-
-    
+    /**
+     * render method
+     * 
+     * @returns {customElements}
+     */
+    render() {
+        return html`
+            <vaadin-grid .items="${this.data}" theme="column-borders">
+                <vaadin-grid-column width="20px" .renderer="${this.indexRenderer}"></vaadin-grid-column>
+                <vaadin-grid-column width="30px" path="well" header="Well"></vaadin-grid-column>
+                <vaadin-grid-column width="40px" path="library" header="Library"></vaadin-grid-column>
+                <vaadin-grid-column width="30px" path="previousPlate" header="Previous Plate"></vaadin-grid-column>
+                <vaadin-grid-column width="30px" path="previousCoordinate" header="Previous Coordinate"></vaadin-grid-column>
+                <vaadin-grid-column width="30px" path="feature" header="Feature"></vaadin-grid-column>
+                <vaadin-grid-column path="nrxId" header="NRX ID"></vaadin-grid-column>
+                <vaadin-grid-column path="barcode" header="2D Barcode"></vaadin-grid-column>
+                <vaadin-grid-column width="30px" path="target" header="Target"></vaadin-grid-column>
+                <vaadin-grid-column path="group" header="Binding Groups"></vaadin-grid-column>
+                <vaadin-grid-column width="140px" .headerRenderer="${this.validationRenderer}" .renderer="${this.validationBodyRenderer}"></vaadin-grid-column>
+            </vaadin-grid>
+        `;
+    }
 
 }
 

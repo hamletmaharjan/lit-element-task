@@ -6,8 +6,8 @@
 
 import {LitElement, html, css} from 'lit';
 
-import './app-table.js';
 import './app-menu.js';
+import './app-table.js';
 
 /**
  * An example element.
@@ -16,28 +16,14 @@ import './app-menu.js';
  * @csspart button - The button
  */
 export class MyElement extends LitElement {
-  static get styles() {
-    // return css`
-    //   :host {
-    //     display: block;
-    //     border: solid 1px gray;
-    //     padding: 16px;
-    //   }
-    // `;
-  }
 
+  /**
+   * Static getter properties
+   * 
+   * @returns Object
+   */
   static get properties() {
     return {
-      /**
-       * The name to say "Hello" to.
-       */
-      name: {type: String},
-
-      /**
-       * The number of times the button has been clicked.
-       */
-      count: {type: Number},
-
       /**
        * The array to store table entries
        */
@@ -47,6 +33,7 @@ export class MyElement extends LitElement {
 
   constructor() {
     super();
+
     this.name = 'World';
     this.count = 0;
     this.data = [
@@ -57,36 +44,27 @@ export class MyElement extends LitElement {
       {id:5 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
       {id:6 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}}
     ];
+
     this.handleEdit = this.handleEdit.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleKebabMenuClick = this.handleKebabMenuClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleKebabMenuClick = this.handleKebabMenuClick.bind(this);
   }
-
-  render() {
-    return html`
-    <app-menu .onEdit="${this.handleEdit}" .onDelete="${this.handleDelete}"></app-menu>
-      <app-table .data="${this.data}" .onKebabMenuClick="${this.handleKebabMenuClick}"></app-table>
-    
-    `;
-  }
-
-  _onClick() {
-    this.count++;
-  }
-
 
   handleEdit(id) {
-    // console.log('edit', id);
     this.shadowRoot.querySelector('app-menu').hidden = true;
     const result = this.data.find((item)=> {
         return item.id === id;
     });
     console.log(result);
   }
+
+
   handleDelete(id) {
-      console.log('delete', id);
-      this.shadowRoot.querySelector('app-menu').hidden = true;
+    console.log('delete', id);
+    this.shadowRoot.querySelector('app-menu').hidden = true;
   }
+
+
   handleKebabMenuClick(e, rowData) {
     let menu = this.shadowRoot.querySelector('app-menu');
     const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
@@ -95,6 +73,15 @@ export class MyElement extends LitElement {
     menu.id = rowData.item.id;
     menu.hidden = false;
   }
+
+
+  render() {
+    return html`
+      <app-menu .onEdit="${this.handleEdit}" .onDelete="${this.handleDelete}"></app-menu>
+      <app-table .data="${this.data}" .onKebabMenuClick="${this.handleKebabMenuClick}"></app-table>
+    `;
+  }
+  
 }
 
 window.customElements.define('my-element', MyElement);
