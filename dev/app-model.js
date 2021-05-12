@@ -1,12 +1,27 @@
 import {LitElement, html, css} from 'lit';
+
 import '@polymer/paper-dialog';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-button/paper-button.js';
 
-
+/**
+ * `<app-model>` Custom component to list all the todos item
+ *
+ * <body>
+ *  <app-model></app-model>
+ *
+ * @polymer
+ * @litElement
+ * @customElement
+ */
 class AppModel extends LitElement {
+    /**
+     * Static getter styles
+     * 
+     * @returns {styles}
+     */
     static get styles() {
         return css`
             #dialog {
@@ -53,35 +68,127 @@ class AppModel extends LitElement {
             .close:hover {
                 cursor: pointer;
             }
-            --paper-input-container-input: {
-                box-sizing: border-box;
-                font-size: inherit;
-                padding: 4px;
-              };
+            .paper-input-container {
+                background-color: red;
+            }
+
+            .custom {
+                color:red;
+            }
+            .unfocused-line{
+                border-style:dotted;
+            }
+          
         `;
     }
 
+     /**
+     * Static getter properties
+     * 
+     * @returns Object
+     */
     static get properties() {
         return {
+             /**
+             * Holds the name field.
+             *
+             * @type {{name: String}}
+             */
             name: {type:String},
+
+            /**
+             * Holds the legands promoted field.
+             *
+             * @type {{legand: Number}}
+             */
             legand: {type: Number},
+
+            /**
+             * Holds the description field.
+             *
+             * @type {{description: String}}
+             */
             description: {type: String},
+
+            /**
+             * Holds the name total legands in binding group.
+             *
+             * @type {{total: Number}}
+             */
             total: {type: Number},
+
+            /**
+             * Holds the comment field.
+             *
+             * @type {{comment: String}}
+             */
             comment: {type: String}
         }
     }
 
+    /**
+     * constructor
+     */
     constructor() {
         super();
+
         this.name = '';
         this.legand = 0;
         this.description = '';
         this.total = 0;
         this.comment = '';
     }
+
+    /**
+     * Toggles the model box on button click
+     * 
+     * @param  {Object} e
+     */
+    toggleDialog(e) {
+        this.shadowRoot.querySelector('#dialog').toggle();
+    }
+
+    /**
+     * Handles when cancel button is clicked
+     */
+    handleCancel() {
+        [this.name, this.legand, this.description, this.total, this.comment] = ['', 0, '', 0, ''];
+    }
+
+    /**
+     * Handles when Create button is clicked
+     * @param  {Object} e
+     */
+    handleConfirm(e) {
+        let validated = false;
+        validated = this.shadowRoot.querySelector('#name').validate();
+        if(validated){
+            let myObj = {
+                name: this.name, 
+                legandsPromoted: this.legand, 
+                description: this.description,
+                totalLegandsInBindingGroup: this.total,
+                comment: this.comment
+            }
+            console.log(myObj);
+        }
+    }
+    /**
+     * When input field is changes
+     * @param  {Object} event
+     */
+    handleChange(event) {
+		let name = event.target.name;
+        let val = event.target.value;
+        this[name] = val;
+	}
     
+    /**
+     * render method
+     * 
+     * @returns {customElements}
+     */
     render() {
-        console.log('ren');
         return html`
             <paper-button class="pink" raised @click="${this.toggleDialog}">plain dialog</paper-button>
             <paper-dialog id="dialog">
@@ -107,6 +214,7 @@ class AppModel extends LitElement {
                                 label="Legands Promoted*" 
                                 type="number"
                                 name="legand"
+                                class="custom"
                                 .value="${this.legand}"
                                 @input=${this.handleChange}
                                 required></paper-input>
@@ -150,63 +258,7 @@ class AppModel extends LitElement {
         `;
     }
 
-    toggleDialog(e) {
-        // console.log( this.shadowRoot);
-        this.shadowRoot.querySelector('#dialog').toggle();
-       
-        // this.$.dialog.toggle();
-    }
-
-    handleCancel() {
-        [this.name, this.legand, this.description, this.total, this.comment] = ['', 0, '', 0, ''];
-        // this.shadowRoot.querySelector('#name').validate().reset();
-        // console.log(this.name, this.legand, this.description);
-    }
-
-
-    handleConfirm(e) {
-        // console.log(this.name, this.description, this.legand);
-        let validated = false;
-        validated = this.shadowRoot.querySelector('#name').validate();
-        if(validated){
-            let myObj = {
-                name: this.name, 
-                legandsPromoted: this.legand, 
-                description: this.description,
-                totalLegandsInBindingGroup: this.total,
-                comment: this.comment
-            }
-            console.log(myObj);
-        }
-        
-        
-    }
-
-    handleChange(event) {
-        // console.log(event.target.name);
-		let name = event.target.name;
-        let val = event.target.value;
-        switch(name) {
-            case 'name':
-                this.name = val;
-                break;
-            case 'legand':
-                this.legand = val;
-                break;
-            case 'description':
-                this.description = val;
-                break;
-            case 'total':
-                this.total = val;
-                break;
-            case 'comment':
-                this.comment = val;
-                break;
-            default:
-                console.log('invalid');
-                break;
-        }
-	}
+    
 }
 
 
