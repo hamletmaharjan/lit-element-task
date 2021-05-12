@@ -6,6 +6,9 @@
 
 import {LitElement, html, css} from 'lit';
 
+import './app-menu.js';
+import './app-table.js';
+
 /**
  * An example element.
  *
@@ -13,50 +16,72 @@ import {LitElement, html, css} from 'lit';
  * @csspart button - The button
  */
 export class MyElement extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        border: solid 1px gray;
-        padding: 16px;
-        max-width: 800px;
-      }
-    `;
-  }
 
+  /**
+   * Static getter properties
+   * 
+   * @returns Object
+   */
   static get properties() {
     return {
       /**
-       * The name to say "Hello" to.
+       * The array to store table entries
        */
-      name: {type: String},
-
-      /**
-       * The number of times the button has been clicked.
-       */
-      count: {type: Number},
+      data: {type: Array}
     };
   }
 
   constructor() {
     super();
+
     this.name = 'World';
     this.count = 0;
+    this.data = [
+      {id:1 , well: 'A1', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
+      {id:2 , well: 'A2', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
+      {id:3 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
+      {id:4 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
+      {id:5 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}},
+      {id:6 , well: 'A4', library:'MC03', previousPlate:'', previousCoordinate:'', feature:'', nrxId:'NRX-0252942', barcode:'NUR900149', target:'ABC', group:'',validation:{eip:'142123',hp:'HP-009',val:91}}
+    ];
+
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleKebabMenuClick = this.handleKebabMenuClick.bind(this);
   }
+
+  handleEdit(id) {
+    this.shadowRoot.querySelector('app-menu').hidden = true;
+    const result = this.data.find((item)=> {
+        return item.id === id;
+    });
+    console.log(result);
+  }
+
+
+  handleDelete(id) {
+    console.log('delete', id);
+    this.shadowRoot.querySelector('app-menu').hidden = true;
+  }
+
+
+  handleKebabMenuClick(e, rowData) {
+    let menu = this.shadowRoot.querySelector('app-menu');
+    const positions = {left:e.clientX+10 + 'px', top: e.clientY+'px'};
+    menu.positions = {...positions};
+    menu.style.backgroundColor = 'red';
+    menu.id = rowData.item.id;
+    menu.hidden = false;
+  }
+
 
   render() {
     return html`
-      <h1>Hello, ${this.name}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
-      <slot></slot>
+      <app-menu .onEdit="${this.handleEdit}" .onDelete="${this.handleDelete}"></app-menu>
+      <app-table .data="${this.data}" .onKebabMenuClick="${this.handleKebabMenuClick}"></app-table>
     `;
   }
-
-  _onClick() {
-    this.count++;
-  }
+  
 }
 
 window.customElements.define('my-element', MyElement);
